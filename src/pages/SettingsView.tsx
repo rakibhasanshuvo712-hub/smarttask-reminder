@@ -13,6 +13,8 @@ import {
   Calendar,
   LogOut,
   Save,
+  Smartphone,
+  ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useNotifications } from '@/context/NotificationContext';
@@ -395,7 +397,66 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenSupabaseModal,
         </form>
       </div>
 
-      {/* SECTION 5: Google Play Compliance & Privacy Policy */}
+      {/* SECTION 5: Android App Distribution & F-Droid */}
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-xs space-y-4">
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
+            <Smartphone className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-slate-900 dark:text-white">
+              Android App Distribution (F-Droid & itch.io)
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Free and open-source Android app stores and direct downloads
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col justify-between">
+            <div>
+              <span className="font-bold text-slate-900 dark:text-white block">
+                F-Droid Open Source Repository
+              </span>
+              <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1 leading-relaxed">
+                Official F-Droid recipe configured targeting release tag <code className="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">v1.0.0</code>.
+              </p>
+            </div>
+            <a
+              href="https://gitlab.com/fdroid/fdroiddata"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
+            >
+              <span>View F-Droid Data</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col justify-between">
+            <div>
+              <span className="font-bold text-slate-900 dark:text-white block">
+                itch.io Web & Android Distribution
+              </span>
+              <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1 leading-relaxed">
+                Downloadable package and HTML5 bundle ready for instant distribution.
+              </p>
+            </div>
+            <a
+              href="https://github.com/rakibhasanshuvo712-hub/smarttask-reminder"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+            >
+              <span>GitHub Release v1.0.0</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 6: Google Play Compliance & Privacy Policy */}
       <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
