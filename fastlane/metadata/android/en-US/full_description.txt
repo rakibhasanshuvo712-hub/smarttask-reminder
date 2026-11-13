@@ -1,0 +1,10 @@
+SmartTask is a modern, responsive productivity and deadline management system built exclusively for Bangladesh Standard Time (Asia/Dhaka, UTC+06:00).
+
+Features:
+• Strict Asia/Dhaka Timezone Scheduling: Never miss a deadline due to device timezone discrepancies.
+• Native Phone Alarms: Notifications and ringtones sound on your phone lock screen and notification shade even when the app is closed.
+• Multiple Pre-Deadline Intervals: Set multiple custom alerts (24h, 12h, 6h, 2h, 1h, 30m, 15m, 10m).
+• Overdue Tracking & Recurring Reminders: Continues sending reminder alerts after a deadline has elapsed until completed.
+• Auto-Delete on Expiry: Option to automatically purge and clean up tasks once the deadline expires.
+• Multi-User Account Privacy: Isolated profiles with Supabase PostgreSQL Row Level Security (RLS) and full offline local storage support.
+• 100% Free and Open Source.

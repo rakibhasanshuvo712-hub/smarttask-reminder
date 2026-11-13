@@ -1,0 +1,1 @@
+Initial release v1.0.0 with Asia/Dhaka timezone support, native alarms, and multi-user privacy.
