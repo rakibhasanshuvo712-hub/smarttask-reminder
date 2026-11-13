@@ -1,0 +1,49 @@
+{
+  "repo": {
+    "name": "SmartTask F-Droid Repository",
+    "icon": "favicon.svg",
+    "address": "https://smart-task-rust.vercel.app/fdroid/repo",
+    "description": "Official F-Droid repository for SmartTask Android App",
+    "version": 20002,
+    "timestamp": 1731490000000
+  },
+  "apps": [
+    {
+      "packageName": "com.smarttask.app",
+      "name": "SmartTask",
+      "summary": "Smart Task Reminder & Deadline Alarms in Bangladesh Standard Time",
+      "description": "SmartTask helps users manage daily tasks, set deadlines in Bangladesh Standard Time (Asia/Dhaka, UTC+06:00), and receive automatic high-priority native alarms on their phone before and after deadlines.",
+      "license": "MIT",
+      "webURL": "https://smart-task-rust.vercel.app",
+      "sourceCode": "https://github.com/rakibhasanshuvo712-hub/smarttask-reminder",
+      "issueTracker": "https://github.com/rakibhasanshuvo712-hub/smarttask-reminder/issues",
+      "suggestedVersionCode": 1,
+      "suggestedVersionName": "1.0.0",
+      "added": 1731490000000,
+      "lastUpdated": 1731490000000,
+      "categories": [
+        "Productivity",
+        "Time"
+      ]
+    }
+  ],
+  "packages": {
+    "com.smarttask.app": [
+      {
+        "added": 1731490000000,
+        "apkName": "SmartTask.apk",
+        "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "hashType": "sha256",
+        "minSdkVersion": 22,
+        "nativecode": [],
+        "packageName": "com.smarttask.app",
+        "sig": "",
+        "size": 3500000,
+        "srcname": "SmartTask-source.tar.gz",
+        "targetSdkVersion": 34,
+        "versionCode": 1,
+        "versionName": "1.0.0"
+      }
+    ]
+  }
+}

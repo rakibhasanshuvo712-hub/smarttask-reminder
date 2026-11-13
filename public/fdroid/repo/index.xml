@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fdroid>
+  <repo name="SmartTask F-Droid Repository" pubkey="" timestamp="1731490000" url="https://smart-task-rust.vercel.app/fdroid/repo" version="20">
+    <description>Official F-Droid repository for SmartTask Android App</description>
+  </repo>
+  <application id="com.smarttask.app">
+    <id>com.smarttask.app</id>
+    <added>2026-11-13</added>
+    <lastupdated>2026-11-13</lastupdated>
+    <name>SmartTask</name>
+    <summary>Smart Task Reminder &amp; Deadline Alarms</summary>
+    <icon>favicon.svg</icon>
+    <desc>SmartTask helps users manage daily tasks, set deadlines in Bangladesh Standard Time (Asia/Dhaka, UTC+06:00), and receive automatic high-priority native alarms on their phone before and after deadlines.</desc>
+    <license>MIT</license>
+    <categories>Productivity,Time</categories>
+    <web>https://smart-task-rust.vercel.app</web>
+    <source>https://github.com/rakibhasanshuvo712-hub/smarttask-reminder</source>
+    <tracker>https://github.com/rakibhasanshuvo712-hub/smarttask-reminder/issues</tracker>
+    <marketversion>1.0.0</marketversion>
+    <marketvercode>1</marketvercode>
+    <package>
+      <version>1.0.0</version>
+      <versioncode>1</versioncode>
+      <size>3500000</size>
+      <hash type="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</hash>
+      <apkname>SmartTask.apk</apkname>
+      <sdkver>22</sdkver>
+      <targetsdkver>34</targetsdkver>
+      <added>2026-11-13</added>
+    </package>
+  </application>
+</fdroid>
