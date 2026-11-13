@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Bell,
   Plus,
@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Menu,
+  Smartphone,
 } from 'lucide-react';
 import { BangladeshClockBadge } from '../dashboard/TimezoneBanner';
 import { useAuth } from '@/context/AuthContext';
@@ -30,6 +31,28 @@ export const Header: React.FC<HeaderProps> = ({
   const { unreadCount, pushPermission, requestPushPermission } = useNotifications();
   const { theme, toggleTheme } = useTheme();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert('To install SmartTask on Android, open Chrome, tap the 3 dots (⋮) in the top right, and tap "Add to Home screen" or "Install app".');
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
@@ -78,6 +101,16 @@ export const Header: React.FC<HeaderProps> = ({
             ) : (
               <span className="text-[10px] underline ml-1">Connect SQL</span>
             )}
+          </button>
+
+          {/* Android App Install Button */}
+          <button
+            onClick={handleInstallClick}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
+            title="Install as Android Native PWA"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Install App</span>
           </button>
 
           {/* Browser Push Permission Button if not granted */}
