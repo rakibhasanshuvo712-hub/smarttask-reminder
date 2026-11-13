@@ -8,6 +8,7 @@ import { Header } from './components/layout/Header';
 import { DashboardView } from './pages/DashboardView';
 import { TasksView } from './pages/TasksView';
 import { SettingsView } from './pages/SettingsView';
+import { PrivacyPolicyView } from './pages/PrivacyPolicyView';
 import { TaskModal } from './components/tasks/TaskModal';
 import { TaskDetailModal } from './components/tasks/TaskDetailModal';
 import { DeleteConfirmModal } from './components/tasks/DeleteConfirmModal';
@@ -22,6 +23,7 @@ const MainAppContent: React.FC = () => {
 
   const [currentTab, setCurrentTab] = useState<TabType>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   // Modals state
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -152,29 +154,36 @@ const MainAppContent: React.FC = () => {
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          {currentTab === 'dashboard' && (
-            <DashboardView
-              onOpenTaskModal={handleOpenCreateTask}
-              onViewTask={(task) => setViewingTask(task)}
-              onEditTask={handleOpenEditTask}
-              onDeleteTask={handleOpenDeleteConfirm}
-              onNavigateToTasks={handleNavigateToTasks}
-            />
-          )}
+          {showPrivacyPolicy ? (
+            <PrivacyPolicyView onBack={() => setShowPrivacyPolicy(false)} />
+          ) : (
+            <>
+              {currentTab === 'dashboard' && (
+                <DashboardView
+                  onOpenTaskModal={handleOpenCreateTask}
+                  onViewTask={(task) => setViewingTask(task)}
+                  onEditTask={handleOpenEditTask}
+                  onDeleteTask={handleOpenDeleteConfirm}
+                  onNavigateToTasks={handleNavigateToTasks}
+                />
+              )}
 
-          {currentTab === 'tasks' && (
-            <TasksView
-              onOpenTaskModal={handleOpenCreateTask}
-              onViewTask={(task) => setViewingTask(task)}
-              onEditTask={handleOpenEditTask}
-              onDeleteTask={handleOpenDeleteConfirm}
-            />
-          )}
+              {currentTab === 'tasks' && (
+                <TasksView
+                  onOpenTaskModal={handleOpenCreateTask}
+                  onViewTask={(task) => setViewingTask(task)}
+                  onEditTask={handleOpenEditTask}
+                  onDeleteTask={handleOpenDeleteConfirm}
+                />
+              )}
 
-          {currentTab === 'settings' && (
-            <SettingsView
-              onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
-            />
+              {currentTab === 'settings' && (
+                <SettingsView
+                  onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
+                  onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)}
+                />
+              )}
+            </>
           )}
         </main>
       </div>

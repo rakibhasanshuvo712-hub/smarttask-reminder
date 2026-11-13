@@ -22,9 +22,10 @@ import { sound } from '@/lib/audio';
 
 interface SettingsViewProps {
   onOpenSupabaseModal: () => void;
+  onOpenPrivacyPolicy?: () => void;
 }
 
-export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenSupabaseModal }) => {
+export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenSupabaseModal, onOpenPrivacyPolicy }) => {
   const { user, updateProfile, logout, isSupabaseLive } = useAuth();
   const { pushPermission, requestPushPermission, triggerTestNotification } = useNotifications();
 
@@ -394,7 +395,30 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenSupabaseModal 
         </form>
       </div>
 
-      {/* SECTION 5: Supabase Database Integration & Sign Out */}
+      {/* SECTION 5: Google Play Compliance & Privacy Policy */}
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-blue-600" />
+            Privacy Policy & Google Play Compliance
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Read our compliance policy on native Android alarms, lock-screen notifications, and user data security.
+          </p>
+        </div>
+
+        {onOpenPrivacyPolicy && (
+          <button
+            type="button"
+            onClick={onOpenPrivacyPolicy}
+            className="px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-xs font-bold hover:bg-blue-100 transition-colors shrink-0"
+          >
+            View Privacy Policy
+          </button>
+        )}
+      </div>
+
+      {/* SECTION 6: Supabase Database Integration & Sign Out */}
       <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">

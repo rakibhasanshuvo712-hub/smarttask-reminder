@@ -135,7 +135,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ? input.reminder_offsets
         : user.default_reminder_offsets || [1440, 360, 120, 30],
       newTask.id,
-      user.id
+      user.id,
+      newTask.title
     );
 
     const supabase = getSupabaseClient();
@@ -204,7 +205,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
             updatedTask.deadline_at,
             offsets,
             taskId,
-            user.id
+            user.id,
+            updatedTask.title
           );
           if (newReminders.length > 0) {
             await supabase.from('reminders').insert(newReminders);
@@ -222,7 +224,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
           updatedTask.deadline_at,
           offsets,
           taskId,
-          user.id
+          user.id,
+          updatedTask.title
         );
         localDb.saveReminders(newReminders);
       }

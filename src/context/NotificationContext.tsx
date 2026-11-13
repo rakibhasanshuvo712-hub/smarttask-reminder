@@ -29,10 +29,12 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [pushPermission, setPushPermission] = useState<NotificationPermission>(() =>
-    notificationService.getPermissionState()
-  );
+  const [pushPermission, setPushPermission] = useState<NotificationPermission>('default');
   const [focusedTaskId, setFocusedTaskId] = useState<string | null>(null);
+
+  useEffect(() => {
+    notificationService.getPermissionState().then((perm) => setPushPermission(perm));
+  }, []);
 
   // Keep track of overdue notification timestamps to avoid duplicate spam within 1 hour
   const overdueNotifiedMap = useRef<Map<string, number>>(new Map());
