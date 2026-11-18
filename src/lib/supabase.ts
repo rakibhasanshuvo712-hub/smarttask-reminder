@@ -10,11 +10,11 @@ const STORAGE_KEY_NOTIFICATIONS = 'smarttask_db_notifications';
 
 // 5 Pre-configured mock profiles for instant multi-user testing
 export const INITIAL_DEMO_USERS: Array<{ email: string; name: string; avatar: string }> = [
-  { email: 'rakib@smarttask.com', name: 'Rakib Hasan', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80' },
+  { email: 'alex@smarttask.com', name: 'Alex Rivera', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80' },
   { email: 'ayesha@smarttask.com', name: 'Ayesha Rahman', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80' },
   { email: 'tanvir@smarttask.com', name: 'Tanvir Ahmed', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' },
-  { email: 'sadia@smarttask.com', name: 'Sadia Islam', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80' },
-  { email: 'farhan@smarttask.com', name: 'Farhan Kabir', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80' },
+  { email: 'sarah@smarttask.com', name: 'Sarah Connor', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80' },
+  { email: 'david@smarttask.com', name: 'David Kim', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80' },
 ];
 
 export interface SupabaseConfig {
@@ -89,8 +89,22 @@ class LocalDatabase {
   }
 
   private seedDefaultsIfNeeded() {
-    const profiles = this.getProfiles();
-    if (profiles.length === 0) {
+    const existing = this.getProfiles();
+    if (existing.length > 0) {
+      // Clean up legacy Rakib demo user profile if present
+      const cleaned = existing.map((p) => {
+        if (p.email === 'rakib@smarttask.com' || p.full_name === 'Rakib Hasan') {
+          return {
+            ...p,
+            full_name: 'Alex Rivera',
+            email: 'alex@smarttask.com',
+            avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+          };
+        }
+        return p;
+      });
+      localStorage.setItem(STORAGE_KEY_PROFILES, JSON.stringify(cleaned));
+    } else {
       const initialProfiles: Profile[] = INITIAL_DEMO_USERS.map((u, i) => ({
         id: `user-${i + 1}`,
         full_name: u.name,
@@ -104,7 +118,7 @@ class LocalDatabase {
       }));
       localStorage.setItem(STORAGE_KEY_PROFILES, JSON.stringify(initialProfiles));
 
-      // Seed starter tasks for user-1 (Rakib) with Bangladesh deadlines
+      // Seed starter tasks for user-1 with Bangladesh deadlines
       const now = Date.now();
       const sampleTasks: Task[] = [
         {
@@ -239,6 +253,45 @@ class LocalDatabase {
   }
 
   // --- TASKS ---
+  seedStarterTasksForUser(userId: string, userName: string): void {
+    const existing = this.getTasks(userId);
+    if (existing.length > 0) return;
+
+    const now = Date.now();
+    const starterTasks: Task[] = [
+      {
+        id: `task-${Date.now()}-1`,
+        user_id: userId,
+        title: `Welcome to SmartTask, ${userName.split(' ')[0] || 'User'}!`,
+        description: 'Explore your personalized dashboard, configure reminder intervals, and manage your deadlines.',
+        start_at: new Date(now).toISOString(),
+        deadline_at: new Date(now + 3600000 * 24).toISOString(),
+        priority: 'high',
+        is_completed: false,
+        auto_delete_after_deadline: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      {
+        id: `task-${Date.now()}-2`,
+        user_id: userId,
+        title: 'Configure Bangladesh Timezone Reminders',
+        description: 'Create your first custom task with Asia/Dhaka (UTC+6) deadlines and multi-tier alert intervals.',
+        start_at: new Date(now).toISOString(),
+        deadline_at: new Date(now + 3600000 * 48).toISOString(),
+        priority: 'medium',
+        is_completed: false,
+        auto_delete_after_deadline: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+
+    for (const t of starterTasks) {
+      this.saveTask(t);
+    }
+  }
+
   getTasks(userId: string): Task[] {
     try {
       const data = localStorage.getItem(STORAGE_KEY_TASKS);
@@ -411,17 +464,21 @@ class LocalDatabase {
   getCurrentSession(): { user: Profile } | null {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_AUTH);
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // Clear old legacy auto-assigned Rakib session so app does not run on behalf of Rakib
+        if (parsed?.user?.email === 'rakib@smarttask.com' || parsed?.user?.full_name === 'Rakib Hasan') {
+          localStorage.removeItem(STORAGE_KEY_AUTH);
+          return null;
+        }
+        if (parsed?.user?.id) {
+          return parsed;
+        }
+      }
     } catch {
       // ignore
     }
-    // Default to first profile if not set
-    const profiles = this.getProfiles();
-    if (profiles.length > 0) {
-      const session = { user: profiles[0] };
-      localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(session));
-      return session;
-    }
+    // Return null so user starts at the login/register screen as themselves
     return null;
   }
 

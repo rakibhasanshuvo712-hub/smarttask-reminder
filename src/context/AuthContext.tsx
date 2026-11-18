@@ -139,6 +139,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     localDb.saveProfile(newProfile);
+    localDb.seedStarterTasksForUser(newProfile.id, newProfile.full_name);
     setUser(newProfile);
     localDb.setCurrentSession(newProfile);
     setAllProfiles(localDb.getProfiles());
@@ -208,6 +209,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     localDb.saveProfile(newProfile);
+    localDb.seedStarterTasksForUser(newProfile.id, newProfile.full_name);
     setUser(newProfile);
     localDb.setCurrentSession(newProfile);
     setAllProfiles(localDb.getProfiles());

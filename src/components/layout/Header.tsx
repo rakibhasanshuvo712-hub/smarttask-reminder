@@ -9,6 +9,9 @@ import {
   AlertCircle,
   Menu,
   Smartphone,
+  LogOut,
+  User as UserIcon,
+  ChevronDown,
 } from 'lucide-react';
 import { BangladeshClockBadge } from '../dashboard/TimezoneBanner';
 import { useAuth } from '@/context/AuthContext';
@@ -27,10 +30,11 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSupabaseModal,
   onToggleSidebar,
 }) => {
-  const { user, isSupabaseLive } = useAuth();
+  const { user, isSupabaseLive, logout } = useAuth();
   const { unreadCount, pushPermission, requestPushPermission } = useNotifications();
   const { theme, toggleTheme } = useTheme();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
@@ -167,14 +171,64 @@ export const Header: React.FC<HeaderProps> = ({
             {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-700" />}
           </button>
 
-          {/* User Profile Avatar */}
+          {/* User Profile Avatar & Menu */}
           {user && (
-            <div className="flex items-center pl-1 sm:pl-2">
-              <img
-                src={user.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${user.full_name}`}
-                alt={user.full_name}
-                className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-500/30"
-              />
+            <div className="relative flex items-center pl-1 sm:pl-2">
+              <button
+                onClick={() => setUserMenuOpen((prev) => !prev)}
+                className="flex items-center gap-1.5 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                title={`${user.full_name} (${user.email})`}
+              >
+                <img
+                  src={user.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.full_name)}`}
+                  alt={user.full_name}
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-500/30"
+                />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 hidden sm:block" />
+              </button>
+
+              {/* User Dropdown Popover */}
+              {userMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setUserMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-2 w-64 rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-50 animate-in fade-in zoom-in-95 duration-100">
+                    <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-700/60">
+                      <img
+                        src={user.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.full_name)}`}
+                        alt={user.full_name}
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500/20"
+                      />
+                      <div className="overflow-hidden">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                          {user.full_name}
+                        </p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                          {user.email}
+                        </p>
+                        <span className="inline-block mt-1 text-[10px] font-medium px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
+                          Asia/Dhaka (UTC+6)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        onClick={async () => {
+                          setUserMenuOpen(false);
+                          await logout();
+                        }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors font-medium text-left"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
